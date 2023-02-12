@@ -67,41 +67,75 @@ def Book():
             with open("C:\\Users\\Pranav\\Downloads\\ngos_log.csv", 'r') as csv_f:
                 r = csv.reader(csv_f , delimiter=',')
                 r=list(r)
-            for i in range(1,len(r)):
-                if r[i][0]==NGOName:
-                    r[i][4]=str(int(r[i][4])+Donation)
-                    r[i][5]=str(Donation)
+                print(r[0][0]+" "+r[0][1]+" "+r[0][2]+" "+r[0][3]+" "+r[0][4]+" "+r[0][5])
+                for i in range(1,len(r)):
+                    if r[i][0]==NGOName:
+                        r[i][4]=str(int(r[i][4])+Donation)
+                        r[i][5]=str(Donation)
                     break
-            with open("C:\\Users\\Pranav\\Downloads\\temp.csv", mode = 'w', newline='') as csv_f:
-                csvwriter = csv.writer(csv_f, delimiter=',',quotechar="") 
+                
+                for i in range(1,len(r)):
+                    if r[i][0]==NGOName:
+                        print(r[i][0]+" "+r[i][1]+" "+r[i][2]+" "+r[i][3]+" "+r[i][4]+" "+r[i][5])
+            try:
+                with open("C:\\Users\\Pranav\\Downloads\\ngos_log.csv",'w') as csv_f:
+                 csvwriter=csv.writer(csv_f)
+                 csvwriter.writerows(r)
+            except(PermissionError):
+                print()
+            with open("temp.csv",mode='r') as csv_f:
+                r = csv.reader(csv_f )
+                r=list(r)
+                for i in r:
+                    if i[0]==s1:
+                        i[2]=str(int(i[2]) + donation)
+            with open("temp.csv",mode='w') as csv_f:
+                csvwriter=csv.writer(csv_f)
                 csvwriter.writerows(r)
-            print(r[0][0]+" "+r[0][1]+" "+r[0][2]+" "+r[0][3]+" "+r[0][4]+" "+r[0][5])
-            for i in range(1,len(r)):
-                if r[i][0]==NGOName:
-                    print(r[i][0]+" "+r[i][1]+" "+r[i][2]+" "+r[i][3]+" "+r[i][4]+" "+r[i][5])
-                    break
             s=2;
         UI.destroy()
 #labels for boxes
-
+d=0
 s=input("Do you have any Login ID Password ? (Enter y for yes and n for no)")
-'''if(s.lower()=='n'):
-if(s.lower()=='y'):
-'''
-Header=tk.Label(text='AVAILABLE OPTIONS FOR NGOS : \nA\nB\nC\nD\nFill your data in the following fields')
-DonorName_label = tk.Label(text="Enter your name : "); DonorName_in = tk.Entry(UI)
-NGOName_label=tk.Label(text="Enter your preffered NGO name : ");NGOName_in=tk.Entry(UI)
-Donation_label=tk.Label(text="Enter your preffered donation amount : ");Donation_in=tk.Entry(UI)
-Method_label=tk.Label(text="Enter your donation method : ");Method_in=tk.Entry(UI)
-Phone_label=tk.Label(text="Enter your phone number : ");Phone_in=tk.Entry(UI)
-Book_Button=tk.Button(UI,text='Book Donation',command=Book)
-Error=tk.Label(UI)
+if(s.lower()=='n'):
+    s1=input("Enter id : ")
+    s2=input("Enter password : ")
+    with open("ids.csv",mode='a',newline='') as csv_f:
+        csvwriter=csv.writer(csv_f)
+        csvwriter.writerow([s1,s2,0])
+        d=1
+elif(s.lower()=='y'):
+    s1=input("Enter id : ")
+    s2=input("Enter password : ")
+    try:
+        with open("ids.csv",mode='r',newline='') as csv_f:
+            r = csv.reader(csv_f , delimiter=',')
+            r=list(r)
+            for i in r:
+                if i[0]==s1:
+                    if i[1]==s2:
+                        d=1
+                        print("Welcome back : "+s1)
+                        print("Total Donated : "+i[2])
+    except(EOFError):
+        print("Ran into an error try again")
+if(d==1):
+ Header=tk.Label(text='AVAILABLE OPTIONS FOR NGOS : \nA\nB\nC\nD\nFill your data in the following fields')
+ DonorName_label = tk.Label(text="Enter your name : "); DonorName_in = tk.Entry(UI)
+ NGOName_label=tk.Label(text="Enter your preffered NGO name : ");NGOName_in=tk.Entry(UI)
+ Donation_label=tk.Label(text="Enter your preffered donation amount : ");Donation_in=tk.Entry(UI)
+ Method_label=tk.Label(text="Enter your donation method : ");Method_in=tk.Entry(UI)
+ Phone_label=tk.Label(text="Enter your phone number : ");Phone_in=tk.Entry(UI)
+ Book_Button=tk.Button(UI,text='Book Donation',command=Book)
+ Error=tk.Label(UI)
 
-Header.pack()
-DonorName_label.pack();DonorName_in.pack()
-NGOName_label.pack();NGOName_in.pack()
-Donation_label.pack();Donation_in.pack()
-Method_label.pack();Method_in.pack()
-Phone_label.pack();Phone_in.pack()
-Book_Button.pack();Error.pack()
-tk.mainloop()
+ Header.pack()
+ DonorName_label.pack();DonorName_in.pack()
+ NGOName_label.pack();NGOName_in.pack()
+ Donation_label.pack();Donation_in.pack()
+ Method_label.pack();Method_in.pack()
+ Phone_label.pack();Phone_in.pack()
+ Book_Button.pack();Error.pack()
+ tk.mainloop()
+else:
+    print("Ran into some error try again")
